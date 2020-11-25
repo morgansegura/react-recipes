@@ -8,6 +8,7 @@ const createToken = (user, secret, expiresIn) => {
 exports.resolvers = {
 	Query: {
 		getAllRecipes: async (root, args, { Recipe }) => {
+			console.log(Recipe);
 			const allRecipes = await Recipe.find();
 			return allRecipes;
 		},

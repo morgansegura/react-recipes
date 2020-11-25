@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const cors = require('cors');
 
 require('dotenv').config({ path: 'variables.env' });
@@ -9,15 +9,26 @@ const Recipe = require('./models/Recipe');
 const User = require('./models/User');
 
 // Bring in GraphQL-Express middleware
-const { graphiqlExpress, graphqlExpress } = require('apollo-server-express');
-const { makeExecutableSchema } = require('graphql-tools');
+const { ApolloServer, gql } = require('apollo-server-express');
+// const { graphiqlExpress, graphqlExpress } = require('apollo-server-express');
+// const { makeExecutableSchema } = require('graphql-tools');
 
 const { typeDefs } = require('./schema');
 const { resolvers } = require('./resolvers');
 
-const schema = makeExecutableSchema({
+const schema = new ApolloServer({
 	typeDefs,
 	resolvers,
+	context: ({ req }) => ({
+		Recipe,
+		User,
+	}),
+	playgroud: {
+		endpoint: '/graphql',
+		setting: {
+			'editor.theme': 'light',
+		},
+	},
 });
 
 // Connect to DB
@@ -41,20 +52,24 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Create Graphiql application
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+// app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 // Connect Schemas with GraphQL
-app.use(
-	'/graphql',
-	bodyParser.json(),
-	graphqlExpress({
-		schema,
-		context: {
-			Recipe,
-			User,
-		},
-	}),
-);
+// app.use(
+// 	'/graphql',
+// 	bodyParser.json(),
+// 	graphqlExpress({
+// 		schema,
+// 		context: {
+// 			Recipe,
+// 			User,
+// 		},
+// 	}),
+// );
+
+schema.applyMiddleware({
+	app,
+});
 
 const PORT = process.env.port || 4444;
 

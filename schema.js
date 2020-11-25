@@ -1,4 +1,5 @@
 exports.typeDefs = `
+directive @unique on FIELD_DEFINITION
 type Recipe {
 	_id: ID
 	name: String!
