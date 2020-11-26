@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import App from './components/App';
 import Signin from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
+import withSession from './components/withSession';
 // import reportWebVitals from './reportWebVitals';
 
 import ApolloClient from 'apollo-boost';
@@ -12,23 +13,45 @@ import './styles/tailwind.css';
 
 const client = new ApolloClient({
 	uri: 'http://localhost:4444/graphql',
+	fetchOptions: {
+		credentials: 'include',
+	},
+	request: operation => {
+		const token = localStorage.getItem('token');
+		operation.setContext({
+			headers: {
+				authorization: token,
+			},
+		});
+	},
+	onError: ({ networkError }) => {
+		if (networkError) {
+			console.log('Network Error: ', networkError);
+
+			if (networkError.statusCode === 401) {
+				localStorage.removeItem('token');
+			}
+		}
+	},
 });
 
-const Root = () => (
+const Root = ({ refetch }) => (
 	<Router>
 		<Switch>
 			<Route path='/' exact component={App} />
-			<Route path='/signin' component={Signin} />
-			<Route path='/signup' component={Signup} />
+			<Route path='/signin' render={() => <Signin refetch={refetch} />} />
+			<Route path='/signup' render={() => <Signup refetch={refetch} />} />
 			<Redirect to='/' />
 		</Switch>
 	</Router>
 );
 
+const RootWithSession = withSession(Root);
+
 ReactDOM.render(
 	<React.StrictMode>
 		<ApolloProvider client={client}>
-			<Root />
+			<RootWithSession />
 		</ApolloProvider>
 	</React.StrictMode>,
 	document.getElementById('root'),

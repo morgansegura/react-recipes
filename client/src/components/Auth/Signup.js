@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
 import { SIGNUP_USER } from '../../queries';
 import Error from '../Error';
 
@@ -26,10 +27,12 @@ class Signup extends React.Component {
 
 	handleSubmit = (event, signupUser) => {
 		event.preventDefault();
-		signupUser().then(({ data: { signupUser } }) => {
-			console.log(signupUser.token);
-			localStorage.setItem('token', signupUser.token);
+		signupUser().then(async ({ data }) => {
+			console.log(data);
+			localStorage.setItem('token', data.signupUser.token);
+			await this.props.refetch();
 			this.clearState();
+			this.props.history.push('/');
 		});
 	};
 
@@ -43,7 +46,7 @@ class Signup extends React.Component {
 	render() {
 		const { username, email, password, passwordConfirmation } = this.state;
 		return (
-			<div className='min-h-screen bg-gray-100 flex flex-col items-center justify-center'>
+			<div className='min-h-screen bg-gray-100 flex flex-col items-center justify-center px-6'>
 				<div className='w-full max-w-screen-sm border border-gray-200 rounded-md bg-white shadow-md flex flex-col'>
 					<h2 className='p-4 text-lg border-b text-gray-500 border-gray-100'>Signup for a new account.</h2>
 					<Mutation mutation={SIGNUP_USER} variables={{ username, email, password }}>
@@ -70,4 +73,4 @@ class Signup extends React.Component {
 	}
 }
 
-export default Signup;
+export default withRouter(Signup);

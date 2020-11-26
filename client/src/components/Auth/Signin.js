@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { SIGNIN_USER } from '../../queries';
 import Error from '../Error';
@@ -24,10 +25,12 @@ class Signin extends React.Component {
 
 	handleSubmit = (event, signinUser) => {
 		event.preventDefault();
-		signinUser().then(({ data: { signinUser } }) => {
-			console.log(signinUser.token);
-			localStorage.setItem('token', signinUser.token);
+		signinUser().then(async ({ data }) => {
+			console.log(data);
+			localStorage.setItem('token', data.signinUser.token);
+			await this.props.refetch();
 			this.clearState();
+			this.props.history.push('/');
 		});
 	};
 
@@ -41,7 +44,7 @@ class Signin extends React.Component {
 	render() {
 		const { username, password } = this.state;
 		return (
-			<div className='min-h-screen bg-gray-100 flex flex-col items-center justify-center'>
+			<div className='min-h-screen bg-gray-100 flex flex-col items-center justify-center px-6'>
 				<div className='w-full max-w-screen-sm border border-gray-200 rounded-md bg-white shadow-md flex flex-col'>
 					<h2 className='p-4 text-lg border-b text-gray-500 border-gray-100'>Sign in to your account.</h2>
 					<Mutation mutation={SIGNIN_USER} variables={{ username, password }}>
@@ -66,4 +69,4 @@ class Signin extends React.Component {
 	}
 }
 
-export default Signin;
+export default withRouter(Signin);
