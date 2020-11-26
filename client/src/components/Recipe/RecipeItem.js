@@ -6,7 +6,7 @@ const RecipeItem = ({ _id, name, category, createdDate, description, instruction
 		<Link to={`/recipes/${_id}`}>
 			<h4>{name}</h4>
 		</Link>
-		<p>Name: {name}</p>
+		<p>Name: {_id}</p>
 		<p>Category: {category}</p>
 		<p>Created Date: {createdDate}</p>
 		<p>Description: {description}</p>

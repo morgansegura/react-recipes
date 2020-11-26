@@ -29,13 +29,19 @@ const client = new ApolloClient({
 			},
 		});
 	},
-	onError: ({ networkError }) => {
+	onError: ({ networkError, graphQLErrors, errorMessage }) => {
 		if (networkError) {
 			console.log('Network Error: ', networkError);
 
 			if (networkError.statusCode === 401) {
 				localStorage.removeItem('token');
 			}
+		}
+		if (graphQLErrors) {
+			console.log('GraphQL Error: ', graphQLErrors);
+		}
+		if (errorMessage) {
+			console.log('Error Message: ', errorMessage);
 		}
 	},
 });
@@ -49,7 +55,7 @@ const Root = ({ refetch, session }) => (
 				<Route path='/search' component={Search} />
 				<Route path='/signin' render={() => <Signin refetch={refetch} />} />
 				<Route path='/signup' render={() => <Signup refetch={refetch} />} />
-				<Route path='/recipe/add' component={AddRecipe} />
+				<Route path='/recipe/add' render={() => <AddRecipe session={session} />} />
 				<Route path='/recipes/:_id' component={RecipePage} />
 				<Route path='/profile' component={Profile} />
 				<Redirect to='/' />
