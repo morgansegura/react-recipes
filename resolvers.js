@@ -18,7 +18,6 @@ exports.resolvers = {
 		},
 		searchRecipes: async (root, { searchTerm }, { Recipe }) => {
 			if (searchTerm) {
-				console.log(searchTerm);
 				const searchResults = await Recipe.find(
 					{
 						$text: { $search: searchTerm },
@@ -60,6 +59,10 @@ exports.resolvers = {
 				username,
 			}).save();
 			return newRecipe;
+		},
+		deleteUserRecipe: async (root, { _id }, { Recipe }) => {
+			const recipe = await Recipe.findOneAndRemove({ _id });
+			return recipe;
 		},
 		signinUser: async (root, { username, password }, { User }) => {
 			const user = await User.findOne({ username });

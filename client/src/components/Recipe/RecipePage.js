@@ -11,7 +11,6 @@ const RecipePage = ({ match }) => {
 			{({ data, loading, error }) => {
 				if (loading) return <div>Loading</div>;
 				if (error) return <div>Error</div>;
-				console.log(data);
 				return (
 					<div className='min-h-screen'>
 						<div className='py-20 px-8 max-w-6xl mx-auto'>

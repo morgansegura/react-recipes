@@ -7,7 +7,6 @@ class Search extends React.Component {
 	state = { searchResults: [] };
 
 	handleChange = ({ searchRecipes }) => {
-		console.log('Terms: ', searchRecipes);
 		this.setState({ searchResults: searchRecipes });
 	};
 	render() {
