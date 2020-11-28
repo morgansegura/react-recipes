@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import { GET_ALL_RECIPES } from '../queries';
 import RecipeItem from '../components/Recipe/RecipeItem';
 import posed from 'react-pose';
+import Spinner from './Spinner';
 
 const RecipeList = posed.ul({
 	shown: {
@@ -33,7 +34,7 @@ class App extends React.Component {
 					<h1 className='text-2xl font-bold mb-3 inline-block border-b border-gray-800'>Home</h1>
 					<Query query={GET_ALL_RECIPES}>
 						{({ data, loading, error }) => {
-							if (loading) return <div>Loading</div>;
+							if (loading) return <Spinner />;
 							if (error) return <div>Error</div>;
 							const { on } = this.state;
 							return (

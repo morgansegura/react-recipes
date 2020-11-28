@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import LikeRecipe from './LikeRecipe';
+import Spinner from '../Spinner';
 
 import { Query } from 'react-apollo';
 import { GET_RECIPE } from '../../queries';
@@ -10,7 +11,7 @@ const RecipePage = ({ match }) => {
 	return (
 		<Query query={GET_RECIPE} variables={{ _id }}>
 			{({ data, loading, error }) => {
-				if (loading) return <div>Loading</div>;
+				if (loading) return <Spinner />;
 				if (error) return <div>Error</div>;
 				return (
 					<div className='min-h-screen'>
