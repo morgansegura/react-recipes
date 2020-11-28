@@ -21,7 +21,7 @@ class Search extends React.Component {
 								<input
 									placeholder='Search Recipes...'
 									type='search'
-									className='w-full border border-gray-200 py-3 px-4 mb-3 placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300'
+									className='search w-full border border-gray-200 py-3 px-4 mb-3 placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300'
 									onChange={async event => {
 										event.persist();
 										const { data } = await client.query({
