@@ -8,7 +8,7 @@ const RecipeItem = ({ _id, name, imageUrl, category, createdDate, description, i
 			<h4>{name}</h4>
 		</Link>
 		<p>Category: {category}</p>
-		<image src={imageUrl} alt={name} />
+		<img src={imageUrl} alt={name} />
 		<p>Created Date: {createdDate}</p>
 		<p>Description: {description}</p>
 		<p>Instructions: {instructions}</p>

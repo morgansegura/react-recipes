@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-// const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
@@ -12,8 +11,6 @@ const User = require('./models/User');
 
 // Bring in GraphQL-Express middleware
 const { ApolloServer, gql } = require('apollo-server-express');
-// const { graphiqlExpress, graphqlExpress } = require('apollo-server-express');
-// const { makeExecutableSchema } = require('graphql-tools');
 
 const { typeDefs } = require('./schema');
 const { resolvers } = require('./resolvers');
