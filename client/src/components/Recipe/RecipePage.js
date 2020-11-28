@@ -18,7 +18,8 @@ const RecipePage = ({ match }) => {
 							<h2 className='text-2xl font-bold mb-3 inline-block border-b border-gray-800'>{data.getRecipe.name}</h2>
 							<p>Category: {data.getRecipe.name}</p>
 							<p>Description: {data.getRecipe.description}</p>
-							<p>Instructions: {data.getRecipe.instructions}</p>
+							<h3>Instructions:</h3>
+							<div dangerouslySetInnerHTML={{ __html: data.getRecipe.instructions }} />
 							<p>Likes: {data.getRecipe.likes}</p>
 							<p>Created By: {data.getRecipe.username}</p>
 							<LikeRecipe _id={_id} />

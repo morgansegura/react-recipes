@@ -7,11 +7,8 @@ export const GET_ALL_RECIPES = gql`
 		getAllRecipes {
 			_id
 			name
-			description
-			instructions
+			imageUrl
 			category
-			likes
-			createdDate
 		}
 	}
 `;
@@ -37,8 +34,8 @@ export const SEARCH_RECIPES = gql`
 
 /* Recipes Mutations */
 export const ADD_RECIPE = gql`
-	mutation($name: String!, $description: String!, $category: String!, $instructions: String!, $username: String) {
-		addRecipe(name: $name, description: $description, category: $category, instructions: $instructions, username: $username) {
+	mutation($name: String!, $imageUrl: String!, $description: String!, $category: String!, $instructions: String!, $username: String) {
+		addRecipe(name: $name, imageUrl: $imageUrl, description: $description, category: $category, instructions: $instructions, username: $username) {
 			...CompleteRecipe
 		}
 	}

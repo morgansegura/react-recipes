@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
+import CKEditor from 'react-ckeditor-component';
 
 import { ADD_RECIPE, GET_ALL_RECIPES, GET_USER_RECIPES } from '../../queries';
 import Error from '../Error';
@@ -8,6 +9,7 @@ import withAuth from '../withAuth';
 
 const initialState = {
 	name: '',
+	imageUrl: '',
 	instructions: '',
 	category: 'Breakfast',
 	description: '',
@@ -33,6 +35,11 @@ class AddRecipe extends React.Component {
 		});
 	};
 
+	handleEditorChange = event => {
+		const newContent = event.editor.getData();
+		this.setState({ instructions: newContent });
+	};
+
 	handleSubmit = (event, addRecipe) => {
 		event.preventDefault();
 		addRecipe().then(({ data }) => {
@@ -42,9 +49,9 @@ class AddRecipe extends React.Component {
 	};
 
 	validateForm = () => {
-		const { name, category, instructions, description } = this.state;
+		const { name, imageUrl, category, description } = this.state;
 
-		const isInvalid = !name || !category || !instructions || !description;
+		const isInvalid = !name || !imageUrl || !category || !description;
 		return isInvalid;
 	};
 
@@ -59,9 +66,9 @@ class AddRecipe extends React.Component {
 	};
 
 	render() {
-		const { name, category, instructions, description, username } = this.state;
+		const { name, imageUrl, category, instructions, description, username } = this.state;
 		return (
-			<Mutation mutation={ADD_RECIPE} variables={{ name, category, instructions, description, username }} refetchQueries={() => [{ query: GET_USER_RECIPES, variables: { username } }]} update={this.updateCache}>
+			<Mutation mutation={ADD_RECIPE} variables={{ name, imageUrl, category, instructions, description, username }} refetchQueries={() => [{ query: GET_USER_RECIPES, variables: { username } }]} update={this.updateCache}>
 				{(addRecipe, { data, loading, error }) => {
 					return (
 						<div className='min-h-screen'>
@@ -70,6 +77,7 @@ class AddRecipe extends React.Component {
 									<h2 className='mt-8 ml-8 text-2xl font-bold inline-block border-b border-gray-800'>Add a Recipe</h2>
 									<form onSubmit={event => this.handleSubmit(event, addRecipe)} className='form flex flex-col p-8'>
 										<input onChange={this.handleChange} value={name} type='text' name='name' placeholder='Recipe Name' className='w-full border border-gray-200 py-3 px-4 mb-3 rounded-md placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300' />
+										<input onChange={this.handleChange} value={imageUrl} type='text' name='imageUrl' placeholder='Recipe Image' className='w-full border border-gray-200 py-3 px-4 mb-3 rounded-md placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300' />
 										<select name='category' onChange={this.handleChange} value={category} className='w-full border border-gray-200 py-3 px-4 mb-3 rounded-md placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300'>
 											<option value='Breakfast'>Breakfast</option>
 											<option value='Lunch'>Lunch</option>
@@ -77,7 +85,9 @@ class AddRecipe extends React.Component {
 											<option value='Snack'>Snack</option>
 										</select>
 										<input onChange={this.handleChange} value={description} type='text' name='description' placeholder='Add Description' className='w-full border border-gray-200 py-3 px-4 mb-3 rounded-md placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300' />
-										<textarea onChange={this.handleChange} value={instructions} name='instructions' placeholder='Add Instructions' className='w-full border border-gray-200 py-3 px-4 mb-3 rounded-md placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300'></textarea>
+										<label htmlFor='instructions'>Add Instructions</label>
+										<CKEditor name='instructions' content={instructions} events={{ change: this.handleEditorChange }} />
+										{/* <textarea onChange={this.handleChange} value={instructions} name='instructions' placeholder='Add Instructions' className='w-full border border-gray-200 py-3 px-4 mb-3 rounded-md placeholder-gray-500 text-gray-700 text-sm focus:ring-blue-300 transition ease-out duration-300'></textarea> */}
 										<div className='text-right mt-3'>
 											<button disabled={loading || this.validateForm()} type='submit' className={`w-full py-3 shadow-md text-white rounded-md border border-transparent ${this.validateForm() ? 'cursor-not-allowed bg-gray-400' : 'bg-green-500 hover:bg-green-400 active:bg-green-700 transition ease-out duration-300'}`}>
 												Add Recipe
