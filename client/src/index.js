@@ -33,16 +33,17 @@ const client = new ApolloClient({
 	onError: ({ networkError, graphQLErrors, errorMessage }) => {
 		if (networkError) {
 			// console.log('Network Error: ', networkError);
+			localStorage.setItem('token', '');
 
 			if (networkError.statusCode === 401) {
-				localStorage.removeItem('token');
+				localStorage.setItem('token', '');
 			}
 		}
 		if (graphQLErrors) {
-			console.log('GraphQL Error: ', graphQLErrors);
+			// console.log('GraphQL Error: ', graphQLErrors);
 		}
 		if (errorMessage) {
-			console.log('Error Message: ', errorMessage);
+			// console.log('Error Message: ', errorMessage);
 		}
 	},
 });
