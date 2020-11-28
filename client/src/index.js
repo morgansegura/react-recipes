@@ -17,7 +17,8 @@ import { ApolloProvider } from 'react-apollo';
 import './styles/tailwind.css';
 
 const client = new ApolloClient({
-	uri: 'http://localhost:4444/graphql',
+	// uri: 'http://localhost:4444/graphql',
+	uri: 'https://react-apollo-recipes-ms.herokuapp.com/graphql',
 	fetchOptions: {
 		credentials: 'include',
 	},
