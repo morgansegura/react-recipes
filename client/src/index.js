@@ -17,8 +17,8 @@ import { ApolloProvider } from 'react-apollo';
 import './styles/tailwind.css';
 
 const client = new ApolloClient({
-	// uri: 'http://localhost:4444/graphql',
-	uri: 'https://react-apollo-recipes-ms.herokuapp.com/graphql',
+	uri: 'http://localhost:4444/graphql',
+	// uri: 'https://react-apollo-recipes-ms.herokuapp.com/graphql',
 	fetchOptions: {
 		credentials: 'include',
 	},
@@ -40,10 +40,10 @@ const client = new ApolloClient({
 			}
 		}
 		if (graphQLErrors) {
-			// console.log('GraphQL Error: ', graphQLErrors);
+			console.log('GraphQL Error: ', graphQLErrors);
 		}
 		if (errorMessage) {
-			// console.log('Error Message: ', errorMessage);
+			console.log('Error Message: ', errorMessage);
 		}
 	},
 });
